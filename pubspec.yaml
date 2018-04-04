@@ -5,12 +5,12 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^0.1.0
-  feather: ^0.0.1
+  feather: ^0.0.2
+  http: "^0.11.3+16"
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
 
 flutter:
   uses-material-design: true

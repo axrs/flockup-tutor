@@ -1,4 +1,5 @@
 import 'package:feather/feather.dart';
+import 'package:flockup/actions.dart';
 import 'package:flockup/config.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,8 @@ class MyApp extends StatelessWidget {
       debugPrint("=======================================================");
       debugPrint("MEETUP_API_KEY is missing. Please set it in config.dart");
       debugPrint("=======================================================");
+    } else {
+      fetchEvents();
     }
     return new MaterialApp(
         title: 'Flockup',
@@ -28,6 +31,7 @@ class MyApp extends StatelessWidget {
 }
 
 Widget buildHome(BuildContext context, Map data) {
+  final List<Map> events = get(data, 'events', []);
   return new Scaffold(
     appBar: new AppBar(
       title: new Text("Flockup"),
@@ -37,7 +41,7 @@ Widget buildHome(BuildContext context, Map data) {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           new Expanded(
-            child: new Text("Events will go here"),
+            child: new Text('${events.length}'),
           )
         ],
       ),

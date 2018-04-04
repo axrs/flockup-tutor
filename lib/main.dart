@@ -2,6 +2,7 @@ import 'package:feather/feather.dart';
 import 'package:flockup/actions.dart';
 import 'package:flockup/config.dart';
 import 'package:flockup/event_details.dart';
+import 'package:flockup/ui.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
@@ -70,63 +71,6 @@ class EventListWidget extends StatelessWidget {
   }
 }
 
-Widget buildImageOrPlaceholder(Map event) {
-  final String photo = getIn(event, ['featured_photo', 'photo_link']);
-  var image;
-  if (photo != null) {
-    image = new Image.network(
-      photo,
-      fit: BoxFit.cover,
-    );
-  } else {
-    image = new Container(
-      color: Colors.grey.withOpacity(0.3),
-      child: new Icon(
-        Icons.broken_image,
-        size: 44.0,
-      ),
-    );
-  }
-
-  return new AspectRatio(
-    aspectRatio: 16.0 / 9.0,
-    child: image,
-  );
-}
-
-// ignore: missing_return
-Widget buildIconLabel(
-    {IconData icon,
-    String text,
-    TextStyle style,
-    MainAxisAlignment alignment: MainAxisAlignment.start}) {
-  if (text != null) {
-    return new Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: removeNulls(<Widget>[
-        (icon == null)
-            ? null
-            : new Icon(
-                icon,
-                color: style?.color,
-                size: style?.fontSize,
-              ),
-        (icon == null)
-            ? null
-            : new Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 4.0,
-                ),
-              ),
-        new Text(
-          text,
-          style: style,
-        ),
-      ]),
-    );
-  }
-}
-
 Widget buildEventListItem(BuildContext context, Map event) {
   final String name = get(event, 'name', '');
   final String group = getIn(event, ['group', 'name'], '');
@@ -175,13 +119,13 @@ Widget buildEventListItem(BuildContext context, Map event) {
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          buildIconLabel(
+          iconLabel(
             icon: visibilityIcon,
             text: get(event, 'visibility'),
             style: headerTextStyle.body2,
           ),
-          new Expanded(
-            child: buildIconLabel(
+          expanded(
+            iconLabel(
               text: time,
               icon: Icons.timer,
               alignment: MainAxisAlignment.end,
@@ -205,7 +149,7 @@ Widget buildEventListItem(BuildContext context, Map event) {
           new Stack(
             alignment: AlignmentDirectional.bottomCenter,
             children: <Widget>[
-              buildImageOrPlaceholder(event),
+              imageOrPlaceholder(event),
               footer,
             ],
           ),

@@ -1,4 +1,5 @@
 import 'package:feather/feather.dart';
+import 'package:flockup/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -73,6 +74,50 @@ class EventDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var headerTextStyle = Theme.of(context).accentTextTheme;
+
+    var details = new Container(
+      decoration: new BoxDecoration(
+        color: Colors.black.withOpacity(0.6),
+      ),
+      child: new Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            new Row(
+              children: <Widget>[
+                iconLabel(
+                  text:
+                      '${get(event, 'yes_rsvp_count', 'unknown')} ${getIn(event, [
+                    'group',
+                    'who',
+                  ], 'members')} going',
+                  icon: Icons.people,
+                  alignment: MainAxisAlignment.end,
+                  style: headerTextStyle.body2,
+                ),
+                expanded(
+                  iconLabel(
+                    text: get(event, 'local_time'),
+                    icon: Icons.timer,
+                    alignment: MainAxisAlignment.end,
+                    style: headerTextStyle.body2,
+                  ),
+                ),
+              ],
+            ),
+            iconLabel(
+              text: getIn(event, ['fee', 'amount'], 'free').toString(),
+              icon: Icons.attach_money,
+              alignment: MainAxisAlignment.end,
+              style: headerTextStyle.body2,
+            )
+          ],
+        ),
+      ),
+    );
+
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(get(event, 'name')),
@@ -80,6 +125,7 @@ class EventDetails extends StatelessWidget {
       body: new Column(
         children: [
           buildImage(event),
+          details,
           new Expanded(
             child: new Padding(
               padding: const EdgeInsets.all(16.0),

@@ -89,10 +89,34 @@ Widget buildImageOrPlaceholder(Map event) {
   );
 }
 
+Widget buildIconLabel(
+    {IconData icon,
+    String text,
+    MainAxisAlignment alignment: MainAxisAlignment.start}) {
+  if (text != null) {
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: removeNulls(<Widget>[
+        (icon == null) ? null : new Icon(icon),
+        (icon == null)
+            ? null
+            : new Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 4.0,
+                ),
+              ),
+        new Text(text),
+      ]),
+    );
+  }
+}
+
 Widget buildEventListItem(BuildContext context, Map event) {
   final String name = get(event, 'name', '');
   final String group = getIn(event, ['group', 'name'], '');
-  final String time = get(event, 'local_time', '').toString();
+  final String time = get(event, 'local_time', null);
+  final bool isPublic = get(event, 'visibility') == 'public';
+  final IconData visibilityIcon = isPublic ? Icons.lock_open : Icons.lock;
 
   var header = new Column(
     mainAxisAlignment: MainAxisAlignment.start,
@@ -103,14 +127,19 @@ Widget buildEventListItem(BuildContext context, Map event) {
     ],
   );
 
-  var footer = new Column(
+  var footer = new Row(
     mainAxisAlignment: MainAxisAlignment.start,
     children: <Widget>[
-      new Row(
-        children: <Widget>[
-          new Icon(Icons.timer),
-          new Text(time),
-        ],
+      buildIconLabel(
+        icon: visibilityIcon,
+        text: get(event, 'visibility'),
+      ),
+      new Expanded(
+        child: buildIconLabel(
+          text: time,
+          icon: Icons.timer,
+          alignment: MainAxisAlignment.end,
+        ),
       )
     ],
   );

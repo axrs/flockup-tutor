@@ -94,7 +94,6 @@ class EventDetails extends StatelessWidget {
                     'who',
                   ], 'members')} going',
                   icon: Icons.people,
-                  alignment: MainAxisAlignment.end,
                   style: headerTextStyle.body2,
                 ),
                 expanded(
@@ -107,12 +106,13 @@ class EventDetails extends StatelessWidget {
                 ),
               ],
             ),
+            new Padding(padding: const EdgeInsets.symmetric(vertical: 4.0)),
             iconLabel(
               text: getIn(event, ['fee', 'amount'], 'free').toString(),
               icon: Icons.attach_money,
               alignment: MainAxisAlignment.end,
               style: headerTextStyle.body2,
-            )
+            ),
           ],
         ),
       ),
@@ -126,8 +126,8 @@ class EventDetails extends StatelessWidget {
         children: [
           buildImage(event),
           details,
-          new Expanded(
-            child: new Padding(
+          expanded(
+            new Padding(
               padding: const EdgeInsets.all(16.0),
               child: new ListView(
                 children: removeNulls([]

@@ -80,6 +80,10 @@ Widget buildImageOrPlaceholder(Map event) {
   } else {
     image = new Container(
       color: Colors.grey.withOpacity(0.3),
+      child: new Icon(
+        Icons.broken_image,
+        size: 44.0,
+      ),
     );
   }
 

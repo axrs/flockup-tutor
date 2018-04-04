@@ -41,10 +41,42 @@ Widget buildHome(BuildContext context, Map data) {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           new Expanded(
-            child: new Text('${events.length}'),
+            child: new EventListWidget(events),
           )
         ],
       ),
     ),
+  );
+}
+
+class EventListWidget extends StatelessWidget {
+  final List<Map> events;
+  final ScrollController scrollController;
+
+  EventListWidget(this.events) : scrollController = new ScrollController();
+
+  @override
+  Widget build(BuildContext context) {
+    return new ListView.builder(
+      itemCount: events.length,
+      controller: scrollController,
+      itemBuilder: (BuildContext context, int itemIndex) {
+        if (itemIndex <= events.length) {
+          return buildEventListItem(context, events[itemIndex]);
+        }
+      },
+    );
+  }
+}
+
+Widget buildEventListItem(BuildContext context, Map event) {
+  final String name = get(event, 'name', '');
+  final String group = getIn(event, ['group', 'name'], '');
+
+  return new Column(
+    children: <Widget>[
+      new Text(name),
+      new Text(group),
+    ],
   );
 }

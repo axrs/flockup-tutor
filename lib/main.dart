@@ -69,14 +69,44 @@ class EventListWidget extends StatelessWidget {
   }
 }
 
+Widget buildImageOrPlaceholder(Map event) {
+  final String photo = getIn(event, ['featured_photo', 'photo_link']);
+  var image;
+  if (photo != null) {
+    image = new Image.network(
+      photo,
+      fit: BoxFit.cover,
+    );
+  } else {
+    image = new Container(
+      color: Colors.grey.withOpacity(0.3),
+    );
+  }
+
+  return new AspectRatio(
+    aspectRatio: 16.0 / 9.0,
+    child: image,
+  );
+}
+
 Widget buildEventListItem(BuildContext context, Map event) {
   final String name = get(event, 'name', '');
   final String group = getIn(event, ['group', 'name'], '');
 
-  return new Column(
+  var header = new Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.stretch,
     children: <Widget>[
       new Text(name),
       new Text(group),
+    ],
+  );
+
+  return new Column(
+    children: <Widget>[
+      header,
+      buildImageOrPlaceholder(event),
+//    footer,
     ],
   );
 }

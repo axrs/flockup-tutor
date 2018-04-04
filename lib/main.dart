@@ -92,12 +92,19 @@ Widget buildImageOrPlaceholder(Map event) {
 Widget buildIconLabel(
     {IconData icon,
     String text,
+    TextStyle style,
     MainAxisAlignment alignment: MainAxisAlignment.start}) {
   if (text != null) {
     return new Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: removeNulls(<Widget>[
-        (icon == null) ? null : new Icon(icon),
+        (icon == null)
+            ? null
+            : new Icon(
+                icon,
+                color: style?.color,
+                size: style?.fontSize,
+              ),
         (icon == null)
             ? null
             : new Padding(
@@ -105,7 +112,10 @@ Widget buildIconLabel(
                   horizontal: 4.0,
                 ),
               ),
-        new Text(text),
+        new Text(
+          text,
+          style: style,
+        ),
       ]),
     );
   }
@@ -118,37 +128,78 @@ Widget buildEventListItem(BuildContext context, Map event) {
   final bool isPublic = get(event, 'visibility') == 'public';
   final IconData visibilityIcon = isPublic ? Icons.lock_open : Icons.lock;
 
-  var header = new Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: <Widget>[
-      new Text(name),
-      new Text(group),
-    ],
-  );
+  TextTheme headerTextStyle = Theme.of(context).accentTextTheme;
 
-  var footer = new Row(
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: <Widget>[
-      buildIconLabel(
-        icon: visibilityIcon,
-        text: get(event, 'visibility'),
+  var header = new Container(
+    decoration: new BoxDecoration(
+      color: Theme.of(context).primaryColor,
+    ),
+    child: new Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: new Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          new Text(
+            name,
+            style: headerTextStyle.body2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          new Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 4.0,
+            ),
+          ),
+          new Text(
+            group,
+            style: headerTextStyle.body1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
       ),
-      new Expanded(
-        child: buildIconLabel(
-          text: time,
-          icon: Icons.timer,
-          alignment: MainAxisAlignment.end,
-        ),
-      )
-    ],
+    ),
   );
 
-  return new Column(
-    children: <Widget>[
-      header,
-      buildImageOrPlaceholder(event),
-      footer,
-    ],
+  var footer = new Container(
+    decoration: new BoxDecoration(
+      color: Colors.black.withOpacity(0.6),
+    ),
+    child: new Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: new Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          buildIconLabel(
+            icon: visibilityIcon,
+            text: get(event, 'visibility'),
+            style: headerTextStyle.body2,
+          ),
+          new Expanded(
+            child: buildIconLabel(
+              text: time,
+              icon: Icons.timer,
+              alignment: MainAxisAlignment.end,
+              style: headerTextStyle.body2,
+            ),
+          )
+        ],
+      ),
+    ),
+  );
+
+  return new Padding(
+    padding: const EdgeInsets.only(bottom: 8.0),
+    child: new Column(
+      children: <Widget>[
+        header,
+        new Stack(
+          alignment: AlignmentDirectional.bottomCenter,
+          children: <Widget>[
+            buildImageOrPlaceholder(event),
+            footer,
+          ],
+        ),
+      ],
+    ),
   );
 }

@@ -1,6 +1,7 @@
 import 'package:feather/feather.dart';
 import 'package:flockup/actions.dart';
 import 'package:flockup/config.dart';
+import 'package:flockup/event_details.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
@@ -93,6 +94,7 @@ Widget buildImageOrPlaceholder(Map event) {
   );
 }
 
+// ignore: missing_return
 Widget buildIconLabel(
     {IconData icon,
     String text,
@@ -193,17 +195,22 @@ Widget buildEventListItem(BuildContext context, Map event) {
 
   return new Padding(
     padding: const EdgeInsets.only(bottom: 8.0),
-    child: new Column(
-      children: <Widget>[
-        header,
-        new Stack(
-          alignment: AlignmentDirectional.bottomCenter,
-          children: <Widget>[
-            buildImageOrPlaceholder(event),
-            footer,
-          ],
-        ),
-      ],
+    child: new InkWell(
+      onTap: isPublic
+          ? () => navTo(context, new EventDetails(event))
+          : () async {},
+      child: new Column(
+        children: <Widget>[
+          header,
+          new Stack(
+            alignment: AlignmentDirectional.bottomCenter,
+            children: <Widget>[
+              buildImageOrPlaceholder(event),
+              footer,
+            ],
+          ),
+        ],
+      ),
     ),
   );
 }

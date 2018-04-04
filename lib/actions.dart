@@ -3,6 +3,7 @@ import 'dart:convert' show JSON;
 
 import 'package:feather/feather.dart';
 import 'package:flockup/config.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -54,4 +55,12 @@ List<Map> formatEvents(List<Map> events) {
           }))
       .toList()
         ..sort((y, x) => get(y, 'time', 0).compareTo(get(x, 'time', 0)));
+}
+
+navTo(context, view) {
+  Navigator.push(
+      context,
+      new MaterialPageRoute(
+        builder: (context) => view,
+      ));
 }

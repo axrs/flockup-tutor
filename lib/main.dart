@@ -92,6 +92,7 @@ Widget buildImageOrPlaceholder(Map event) {
 Widget buildEventListItem(BuildContext context, Map event) {
   final String name = get(event, 'name', '');
   final String group = getIn(event, ['group', 'name'], '');
+  final String time = get(event, 'local_time', '').toString();
 
   var header = new Column(
     mainAxisAlignment: MainAxisAlignment.start,
@@ -102,11 +103,23 @@ Widget buildEventListItem(BuildContext context, Map event) {
     ],
   );
 
+  var footer = new Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: <Widget>[
+      new Row(
+        children: <Widget>[
+          new Icon(Icons.timer),
+          new Text(time),
+        ],
+      )
+    ],
+  );
+
   return new Column(
     children: <Widget>[
       header,
       buildImageOrPlaceholder(event),
-//    footer,
+      footer,
     ],
   );
 }

@@ -6,7 +6,9 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^0.1.0
   feather: ^0.0.2
-  http: "^0.11.3+16"
+  http: ^0.11.3+16
+  intl: ^0.15.4
+
 
 dev_dependencies:
   flutter_test:

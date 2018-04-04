@@ -4,6 +4,7 @@ import 'dart:convert' show JSON;
 import 'package:feather/feather.dart';
 import 'package:flockup/config.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 String mapToQueryParam(Map params) {
   return "?" +
@@ -29,9 +30,28 @@ void fetchEvents() {
   http.get(url).then((response) {
     var body = JSON.decode(response.body);
     var city = get(body, 'city');
-    var events = get(body, 'events');
-    events.sort((y, x) => get(y, 'time', 0).compareTo(get(x, 'time', 0)));
+    var events = formatEvents(get(body, 'events'));
     AppDb.dispatch(
         (Map store) => merge(store, {"city": city, "events": events}));
   });
+}
+
+var format = new DateFormat('yyyy-MM-dd HH:mm');
+
+String epochToLocalTime(int epoch) {
+  DateTime t = new DateTime.fromMillisecondsSinceEpoch(
+    epoch,
+    isUtc: true,
+  ).toLocal();
+  return format.format(t);
+}
+
+List<Map> formatEvents(List<Map> events) {
+  return events
+      .map((e) => merge(e, {
+            "local_time": epochToLocalTime(get(e, 'time', 0)),
+            "hasDetails": get(e, 'plain_text_description') != null,
+          }))
+      .toList()
+        ..sort((y, x) => get(y, 'time', 0).compareTo(get(x, 'time', 0)));
 }

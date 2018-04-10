@@ -74,7 +74,7 @@ class EventListWidget extends StatelessWidget {
 Widget buildEventListItem(BuildContext context, Map event) {
   final String name = get(event, 'name', '');
   final String group = getIn(event, ['group', 'name'], '');
-  final String time = get(event, 'local_time', null);
+  final String time = get(event, 'local_time');
   final bool isPublic = get(event, 'visibility') == 'public';
   final IconData visibilityIcon = isPublic ? Icons.lock_open : Icons.lock;
 

@@ -7,7 +7,7 @@ Widget iconLabel(
     String text,
     TextStyle style,
     MainAxisAlignment alignment: MainAxisAlignment.start}) {
-  if (text != null) {
+  if (isNotNull(text)) {
     return new Row(
       mainAxisAlignment: alignment,
       children: nonNullWidgets([
@@ -40,7 +40,7 @@ Widget imageOrPlaceholder(Map event) {
   final String photo = getIn(event, ['featured_photo', 'photo_link']);
   return new AspectRatio(
     aspectRatio: 16.0 / 9.0,
-    child: or(
+    child: ifVal(
         photo,
         (_) => Image.network(
               photo,

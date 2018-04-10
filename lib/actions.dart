@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 String mapToQueryParam(Map params) {
   return "?" +
       params.entries
-          .where((e) => e.value != null)
+          .where(isNotNull)
           .map((e) => '${e.key}=${e.value}')
           .join("&");
 }
@@ -53,7 +53,7 @@ List<Map> formatEvents(List events) {
   return events
       .map((e) => merge(e, {
             "local_time": epochToLocalTime(get(e, 'time', 0)),
-            "hasDetails": get(e, 'plain_text_description') != null,
+            "hasDetails": isNotNull(get(e, 'plain_text_description')),
           }))
       .toList()
         ..sort((y, x) => get(y, 'time', 0).compareTo(get(x, 'time', 0)));

@@ -5,30 +5,27 @@ import 'package:flutter/widgets.dart';
 
 Widget buildImage(Map event) {
   final String photo = getIn(event, ['featured_photo', 'photo_link']);
-  var image;
-  if (photo != null) {
-    image = new Image.network(
-      photo,
-      fit: BoxFit.cover,
-    );
-  } else {
-    image = new Container(
-      color: Colors.grey.withOpacity(0.3),
-    );
-  }
   return new AspectRatio(
     aspectRatio: 16.0 / 9.0,
-    child: image,
+    child: ifVal(
+        photo,
+        (_) => Image.network(
+              photo,
+              fit: BoxFit.cover,
+            ),
+        (_) => new Container(
+              color: Colors.grey.withOpacity(0.3),
+            )),
   );
 }
 
 venueSection(context, event) {
   var venue = get(event, 'venue');
   var theme = Theme.of(context).textTheme;
-  if (venue != null) {
+  if (isNotNull(venue)) {
     var address = ['address_1', 'city']
         .map((f) => get(venue, f))
-        .where((f) => f != null)
+        .where(isNotNull)
         .join(", ");
     var spacer = new Padding(
       padding: const EdgeInsets.symmetric(
@@ -51,7 +48,7 @@ venueSection(context, event) {
 overviewSection(context, event) {
   var details = get(event, 'plain_text_description');
   var theme = Theme.of(context).textTheme;
-  if (details != null) {
+  if (isNotNull(details)) {
     return [
       new Text(
         'OVERVIEW',

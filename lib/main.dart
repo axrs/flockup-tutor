@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
 }
 
 Widget buildHome(BuildContext context, Map data) {
-  final List<Map> events = get(data, 'events', []);
+  final List<Map> events = asMaps(get(data, 'events', []));
   return new Scaffold(
     appBar: new AppBar(
       title: new Text("Flockup"),
@@ -118,7 +118,7 @@ Widget buildEventListItem(BuildContext context, Map event) {
       padding: const EdgeInsets.all(8.0),
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
+        children: nonNullWidgets([
           iconLabel(
             icon: visibilityIcon,
             text: get(event, 'visibility'),
@@ -132,29 +132,34 @@ Widget buildEventListItem(BuildContext context, Map event) {
               style: headerTextStyle.body2,
             ),
           )
-        ],
+        ]),
       ),
     ),
   );
 
+  inkWellIfPublic(Widget child) {
+    if (!isPublic) {
+      return child;
+    }
+    return new InkWell(
+      onTap: () => navTo(context, new EventDetails(event)),
+      child: child,
+    );
+  }
+
   return new Padding(
     padding: const EdgeInsets.only(bottom: 8.0),
-    child: new InkWell(
-      onTap: isPublic
-          ? () => navTo(context, new EventDetails(event))
-          : () async {},
-      child: new Column(
-        children: <Widget>[
-          header,
-          new Stack(
-            alignment: AlignmentDirectional.bottomCenter,
-            children: <Widget>[
-              imageOrPlaceholder(event),
-              footer,
-            ],
-          ),
-        ],
-      ),
-    ),
+    child: inkWellIfPublic(Column(
+      children: <Widget>[
+        header,
+        new Stack(
+          alignment: AlignmentDirectional.bottomCenter,
+          children: nonNullWidgets([
+            imageOrPlaceholder(event),
+            footer,
+          ]),
+        ),
+      ],
+    )),
   );
 }

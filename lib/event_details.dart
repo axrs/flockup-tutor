@@ -130,7 +130,7 @@ class EventDetails extends StatelessWidget {
             new Padding(
               padding: const EdgeInsets.all(16.0),
               child: new ListView(
-                children: removeNulls([]
+                children: nonNullWidgets([]
                   ..addAll(venueSection(context, event))
                   ..addAll(overviewSection(context, event))),
               ),

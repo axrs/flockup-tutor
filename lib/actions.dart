@@ -40,14 +40,16 @@ void fetchEvents() {
 var format = new DateFormat('yyyy-MM-dd HH:mm');
 
 String epochToLocalTime(int epoch) {
-  DateTime t = new DateTime.fromMillisecondsSinceEpoch(
-    epoch,
-    isUtc: true,
-  ).toLocal();
+  DateTime t = DateTime
+      .fromMillisecondsSinceEpoch(
+        epoch,
+        isUtc: true,
+      )
+      .toLocal();
   return format.format(t);
 }
 
-List<Map> formatEvents(List<Map> events) {
+List<Map> formatEvents(List events) {
   return events
       .map((e) => merge(e, {
             "local_time": epochToLocalTime(get(e, 'time', 0)),
@@ -60,7 +62,7 @@ List<Map> formatEvents(List<Map> events) {
 navTo(context, view) {
   Navigator.push(
       context,
-      new MaterialPageRoute(
+      MaterialPageRoute(
         builder: (context) => view,
       ));
 }

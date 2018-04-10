@@ -10,22 +10,24 @@ Widget iconLabel(
   if (text != null) {
     return new Row(
       mainAxisAlignment: alignment,
-      children: removeNulls(<Widget>[
-        (icon == null)
-            ? null
-            : new Icon(
+      children: nonNullWidgets([
+        when(
+          icon,
+          (_) => Icon(
                 icon,
                 color: style?.color,
                 size: style?.fontSize,
               ),
-        (icon == null)
-            ? null
-            : new Padding(
+        ),
+        when(
+          icon,
+          (_) => Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 4.0,
                 ),
               ),
-        new Text(
+        ),
+        Text(
           text,
           style: style,
         ),
@@ -36,28 +38,24 @@ Widget iconLabel(
 
 Widget imageOrPlaceholder(Map event) {
   final String photo = getIn(event, ['featured_photo', 'photo_link']);
-  var image;
-  if (photo != null) {
-    image = new Image.network(
-      photo,
-      fit: BoxFit.cover,
-    );
-  } else {
-    image = new Container(
-      color: Colors.grey.withOpacity(0.3),
-      child: new Icon(
-        Icons.image,
-        size: 44.0,
-      ),
-    );
-  }
-
   return new AspectRatio(
     aspectRatio: 16.0 / 9.0,
-    child: image,
+    child: or(
+        photo,
+        (_) => Image.network(
+              photo,
+              fit: BoxFit.cover,
+            ),
+        (_) => Container(
+              color: Colors.grey.withOpacity(0.3),
+              child: new Icon(
+                Icons.image,
+                size: 44.0,
+              ),
+            )),
   );
 }
 
 Widget expanded(child) {
-  return new Expanded(child: child);
+  return when(child, (_) => new Expanded(child: child));
 }

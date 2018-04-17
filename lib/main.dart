@@ -1,8 +1,8 @@
 import 'package:feather/feather.dart';
-import 'package:flockup/actions.dart';
-import 'package:flockup/config.dart';
-import 'package:flockup/event_details.dart';
-import 'package:flockup/ui.dart';
+import 'package:flockup_tutor/actions.dart';
+import 'package:flockup_tutor/config.dart';
+import 'package:flockup_tutor/event_details.dart';
+import 'package:flockup_tutor/ui.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());

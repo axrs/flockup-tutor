@@ -2,7 +2,7 @@
 import 'dart:convert' show JSON;
 
 import 'package:feather/feather.dart';
-import 'package:flockup/config.dart';
+import 'package:flockup_tutor/config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';

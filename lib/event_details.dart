@@ -1,5 +1,5 @@
 import 'package:feather/feather.dart';
-import 'package:flockup/ui.dart';
+import 'package:flockup_tutor/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
